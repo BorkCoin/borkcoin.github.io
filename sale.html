@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>ワンワン！</title>
+    <title>Sale Page</title>
     <link rel='stylesheet' href='./assets/css/style.css' />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -9,16 +9,19 @@
     <script src="./assets/javascript/application.js"></script>
     <script src="./assets/javascript/web3.min.js"></script>
   </head>
+  <h2>Available Borks for Sale</h2>
   <body>
-    <center>
-    <h1>Bork Coin</h1>
     <br />
-    <div id="splashLogo">
-      <img src="assets/images/splashlogo.png">
-    </div>
+    <div id="noMetamask" class="alert alert-danger" role="alert" style="display:none;">No metamask was detected. Please install metamask to interact with Bork Coin</div>
     <br />
-    <a href="./wallet.html">Woof woof!</a>
-  </center>
-  </body>
 
+  </body>
+  <br />
+  <footer>
+    <a href="./wallet.html">My Borks</a> | <strong>For Sale</strong>
+  </footer>
 </html>
+
+<script>
+var Web3 = require("web3");
+</script>
