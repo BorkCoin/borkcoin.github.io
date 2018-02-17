@@ -14,10 +14,34 @@
     <br />
     <div id="noMetamask" class="alert alert-danger" role="alert" style="display:none;">No metamask was detected. Please install metamask to interact with Bork Coin</div>
     <br />
+    <div id="brkfunctions"class="container">
+        <div class="row">
+            <div class="col-md-5">
+              <div class="col-xs-5" style="text-align: right">
+                <b>Address</b><br />
+                <b>Current balance</b><br />
+              </div>
+              <div class="col-xs-5" style="text-align: left">
+                <span id="currentAddress">Loading...</span><br />
+                <span id="currentBalance">Loading...</span><br />
+              </div>
+              <br />
+
+              <form class="form-inline">
+                <div class="form-group">
+                  <input type="text" class="form-control mx-sm-3" id="transferAddress" placeholder="0xaddress">
+                  <input type="number" class="form-control mx-sm-3" id="transferValue" placeholder="0">
+                  <button type="button" class="btn btn-primary" onclick="transfer()">Send</button>
+                </div>
+              </form>
+            </div>
+        </div>
+    </div>
+
 
   </body>
   <br />
-  <footer
+  <footer>
     <strong>My Borks</strong> | <a href="./sale.html">For Sale</a>
   </footer>
 
@@ -25,4 +49,71 @@
 
 <script>
 var Web3 = require("web3");
+
+let abi;
+let contractAddress;
+let MyContract;
+let myContractInstance;
+
+function getWalletBalance(address) {
+    this.myContractInstance.balanceOf.call(address, function(error, balance) {
+      if (error) {
+        return;
+      }
+
+      document.getElementById('currentBalance').innerHTML = balance + ' BORK';
+    });
+}
+
+function loadContract() {
+  var self = this;
+  // Checking if Web3 has been injected by the browser (Mist/MetaMask)
+  if (typeof this.web3 !== 'undefined') {
+    // Use the browser's ethereum provider
+    var provider = web3.currentProvider;
+    document.getElementById('noMetamask').style.display = 'none';
+    document.getElementById('brkfunctions').style.display = '';
+  } else {
+    console.log('No web3? You should consider trying MetaMask!');
+    document.getElementById('noMetamask').style.display = '';
+    document.getElementById('brkfunctions').style.display = 'none';
+
+    return;
+  }
+  this.web3 = new Web3(provider);
+
+  this.web3.version.getNetwork((err, netId) => {
+    switch (netId) {
+      case "1":
+        self.abi = mainnet.json;
+        self.contractAddress = mainnet.address;
+        break
+      case "3":
+        self.abi = ropsten.json;
+        self.contractAddress = ropsten.address;
+        break
+      case "4":
+        self.abi = rinkeby.json;
+        self.contractAddress = rinkeby.address;
+        break
+      case "42":
+        self.abi = kovan.json;
+        self.contractAddress = kovan.address;
+        break
+      default:
+        console.log('This is an unknown network.');
+    }
+
+    self.MyContract = self.web3.eth.contract(JSON.parse(self.abi));
+    self.myContractInstance = self.MyContract.at(self.contractAddress);
+
+    self.web3.eth.defaultAccount = self.web3.eth.accounts[0];
+    setInterval(function(){
+      getWalletBalance(self.web3.eth.accounts[0]);
+      document.getElementById('currentAddress').innerHTML = this.web3.eth.accounts[0];
+    }, 3000);
+  });
+}
+
+window.addEventListener('load', loadContract());
 </script>
