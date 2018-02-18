@@ -27,13 +27,6 @@
               </div>
               <br />
 
-              <form class="form-inline">
-                <div class="form-group">
-                  <input type="text" class="form-control mx-sm-3" id="transferAddress" placeholder="0xaddress">
-                  <input type="number" class="form-control mx-sm-3" id="transferValue" placeholder="0">
-                  <button type="button" class="btn btn-primary" onclick="transfer()">Send</button>
-                </div>
-              </form>
             </div>
         </div>
     </div>
@@ -64,6 +57,26 @@ function getWalletBalance(address) {
       document.getElementById('currentBalance').innerHTML = balance + ' BORK';
     });
 }
+
+function addEliteBorker(address) {
+  this.myContractInstance.addEliteBorker.call(address, function(error, newGuy) {
+    if (error) {
+      return;
+    }
+
+    alert(newGuy + "has been added :))))");
+  }
+}
+
+ function removeEliteBorker(address) {
+   this.myContractInstance.removeEliteBorker.call(address, function(error, loser) {
+     if (error) {
+       return;
+     }
+
+     alert("loser" + loser + " has FO'd");
+   }
+ }
 
 function loadContract() {
   var self = this;
