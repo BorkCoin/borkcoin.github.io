@@ -13,6 +13,9 @@
     <br />
     <div id="noMetamask" class="alert alert-danger" role="alert" style="display:none;">No metamask was detected. Please install metamask to interact with Bork Coin</div>
     <br />
+
+  <input id="fileForUpload" type='file' onchange='onChooseFile()' />
+  <p id="contents"></p>
   <h2>Create a Bork</h2>
   <h2>Pending</h2>
   <h2>Elite Borkering</h2>
@@ -29,6 +32,34 @@ let abi;
 let contractAddress;
 let MyContract;
 let myContractInstance;
+let data;
+let intArray = [];
+
+function onChooseFile() {
+  var file = document.getElementById("fileForUpload").files[0];
+
+  if (file) {
+    if (file.size > 20480) {
+      console.log("data is too big!");
+      return;
+    }
+
+    var reader = new FileReader();
+    reader.readAsText(file, "UTF-8");
+    reader.onload = function (evt) {
+      data = Array.from(evt.target.result)
+
+      for (var i = 0; i < data.length; i++) {
+      	intArray.push(data[i].charCodeAt(0));
+      }
+    }
+
+    reader.onerror = function (evt) {
+      data = "error reading file";
+    }
+  }
+}
+
 
 function addEliteBorker(address) {
   this.myContractInstance.addEliteBorker.call(address, function(error, newGuy) {
@@ -55,7 +86,7 @@ function createBork(borkName, price, borkType, totalSupply, dataArray) {
     if (error) {
        return;
     }
-  
+
     alert("finish me");
   });
 }
