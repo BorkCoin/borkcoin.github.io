@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Wallet</title>
+    <title>Admin Page</title>
     <link rel='stylesheet' href='./assets/css/style.css' />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -9,35 +9,17 @@
     <script src="./assets/javascript/application.js"></script>
     <script src="./assets/javascript/web3.min.js"></script>
   </head>
-  <h2>Interact with the Contract</h2>
   <body>
     <br />
     <div id="noMetamask" class="alert alert-danger" role="alert" style="display:none;">No metamask was detected. Please install metamask to interact with Bork Coin</div>
     <br />
-    <div id="brkfunctions"class="container">
-        <div class="row">
-            <div class="col-md-5">
-              <div class="col-xs-5" style="text-align: right">
-                <b>Address</b><br />
-                <b>Current balance</b><br />
-              </div>
-              <div class="col-xs-5" style="text-align: left">
-                <span id="currentAddress">Loading...</span><br />
-                <span id="currentBalance">Loading...</span><br />
-              </div>
-              <br />
-
-            </div>
-        </div>
-    </div>
-
-
+  <h2>Create a Bork</h2>
+  <h2>Pending</h2>
+  <h2>Elite Borkering</h2>
   </body>
   <br />
   <footer>
-    <strong>My Borks</strong> | <a href="./sale.html">For Sale</a>
   </footer>
-
 </html>
 
 <script>
@@ -48,15 +30,36 @@ let contractAddress;
 let MyContract;
 let myContractInstance;
 
-function getWalletBalance(address) {
-    this.myContractInstance.balanceOf.call(address, function(error, balance) {
-      if (error) {
-        return;
-      }
+function addEliteBorker(address) {
+  this.myContractInstance.addEliteBorker.call(address, function(error, newGuy) {
+    if (error) {
+       return;
+     }
 
-      document.getElementById('currentBalance').innerHTML = balance + ' BORK';
+    alert(newGuy + " has been added :))))");
     });
 }
+
+function removeEliteBorker(address) {
+   this.myContractInstance.removeEliteBorker.call(address, function(error, loser) {
+    if (error) {
+      return;
+    }
+
+    alert("loser " + loser + " has FO'd");
+  });
+}
+
+function createBork(borkName, price, borkType, totalSupply, dataArray) {
+  this.myContractInstance.createBork.call(address, function(error, newBork) {
+    if (error) {
+       return;
+    }
+  
+    alert("finish me");
+  });
+}
+
 
 function loadContract() {
   var self = this;
@@ -108,5 +111,4 @@ function loadContract() {
   });
 }
 
-window.addEventListener('load', loadContract());
 </script>
