@@ -7,6 +7,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="./assets/javascript/application.js"></script>
+    <script src="./assets/javascript/borkCoin.js"></script>
     <script src="./assets/javascript/web3.min.js"></script>
   </head>
   <h2>Interact with the Contract</h2>
@@ -45,18 +46,8 @@ var Web3 = require("web3");
 
 let abi;
 let contractAddress;
-let MyContract;
-let myContractInstance;
-
-function getWalletBalance(address) {
-    this.myContractInstance.balanceOf.call(address, function(error, balance) {
-      if (error) {
-        return;
-      }
-
-      document.getElementById('currentBalance').innerHTML = balance + ' BORK';
-    });
-}
+let BorkCoinContract;
+let BorkCoinContractInstance;
 
 function loadContract() {
   var self = this;
@@ -74,37 +65,26 @@ function loadContract() {
     return;
   }
   this.web3 = new Web3(provider);
+  this.web3.eth.defaultAccount = self.web3.eth.accounts[0];
 
-  this.web3.version.getNetwork((err, netId) => {
-    switch (netId) {
-      case "1":
-        self.abi = mainnet.json;
-        self.contractAddress = mainnet.address;
-        break
-      case "3":
-        self.abi = ropsten.json;
-        self.contractAddress = ropsten.address;
-        break
-      case "4":
-        self.abi = rinkeby.json;
-        self.contractAddress = rinkeby.address;
-        break
-      case "42":
-        self.abi = kovan.json;
-        self.contractAddress = kovan.address;
-        break
-      default:
-        console.log('This is an unknown network.');
-    }
+  getBorkCoinContract(this.web3, function(err, info) {
 
-    self.MyContract = self.web3.eth.contract(JSON.parse(self.abi));
-    self.myContractInstance = self.MyContract.at(self.contractAddress);
+    abi = info.abi;
+    contractAddress = info.contractAddress;
+    BorkCoinContract = info.contract;
+    BorkCoinContractInstance = info.contractInstance;
 
-    self.web3.eth.defaultAccount = self.web3.eth.accounts[0];
     setInterval(function(){
-      getWalletBalance(self.web3.eth.accounts[0]);
+      getWalletBalance(BorkCoinContractInstance, self.web3.eth.accounts[0], function(err, balance) {
+        if (err) {
+          return console.log(err.message);
+        }
+        document.getElementById('currentBalance').innerHTML = balance + ' BORK';
+      });
+
       document.getElementById('currentAddress').innerHTML = this.web3.eth.accounts[0];
     }, 3000);
+
   });
 }
 

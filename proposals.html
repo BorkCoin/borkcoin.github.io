@@ -62,37 +62,6 @@ function onChooseFile() {
 }
 
 
-function addEliteBorker(address) {
-  this.myContractInstance.addEliteBorker.call(address, function(error, newGuy) {
-    if (error) {
-       return;
-     }
-
-    alert(newGuy + " has been added :))))");
-    });
-}
-
-function removeEliteBorker(address) {
-   this.myContractInstance.removeEliteBorker.call(address, function(error, loser) {
-    if (error) {
-      return;
-    }
-
-    alert("loser " + loser + " has FO'd");
-  });
-}
-
-function createBork(borkName, price, borkType, totalSupply, dataArray) {
-  this.myContractInstance.createBork.call(address, function(error, newBork) {
-    if (error) {
-       return;
-    }
-
-    alert("finish me");
-  });
-}
-
-
 function loadContract() {
   var self = this;
   // Checking if Web3 has been injected by the browser (Mist/MetaMask)
