@@ -1,5 +1,11 @@
-
 #splashLogo {
   margin: auto;
-  width: 50%;
+}
+
+body {
+  padding: 50px;
+  font: 18px;
+  font-family: 'Amatic SC', cursive;;
+  text-align: center;
+  overflow-x: hidden;
 }
