@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Admin Page</title>
+    <link rel='stylesheet' href='./assets/css/style.css' />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="./assets/javascript/application.js"></script>
+    <script src="./assets/javascript/web3.min.js"></script>
+  </head>
+  <body>
+    <br />
+    <div id="noMetamask" class="alert alert-danger" role="alert" style="display:none;">No metamask was detected. Please install metamask to interact with Bork Coin</div>
+    <br />
+  <h2>Create a Bork</h2>
+  <h2>Pending</h2>
+  <h2>Elite Borkering</h2>
+  </body>
+  <br />
+  <footer>
+  </footer>
+</html>
+
+<script>
+var Web3 = require("web3");
+
+let abi;
+let contractAddress;
+let MyContract;
+let myContractInstance;
+
+function addEliteBorker(address) {
+  this.myContractInstance.addEliteBorker.call(address, function(error, newGuy) {
+    if (error) {
+       return;
+     }
+
+    alert(newGuy + " has been added :))))");
+    });
+}
+
+function removeEliteBorker(address) {
+   this.myContractInstance.removeEliteBorker.call(address, function(error, loser) {
+    if (error) {
+      return;
+    }
+
+    alert("loser " + loser + " has FO'd");
+  });
+}
+
+function createBork(borkName, price, borkType, totalSupply, dataArray) {
+  this.myContractInstance.createBork.call(address, function(error, newBork) {
+    if (error) {
+       return;
+    }
+  
+    alert("finish me");
+  });
+}
+
+
+function loadContract() {
+  var self = this;
+  // Checking if Web3 has been injected by the browser (Mist/MetaMask)
+  if (typeof this.web3 !== 'undefined') {
+    // Use the browser's ethereum provider
+    var provider = web3.currentProvider;
+    document.getElementById('noMetamask').style.display = 'none';
+    document.getElementById('brkfunctions').style.display = '';
+  } else {
+    console.log('No web3? You should consider trying MetaMask!');
+    document.getElementById('noMetamask').style.display = '';
+    document.getElementById('brkfunctions').style.display = 'none';
+
+    return;
+  }
+  this.web3 = new Web3(provider);
+
+  this.web3.version.getNetwork((err, netId) => {
+    switch (netId) {
+      case "1":
+        self.abi = mainnet.json;
+        self.contractAddress = mainnet.address;
+        break
+      case "3":
+        self.abi = ropsten.json;
+        self.contractAddress = ropsten.address;
+        break
+      case "4":
+        self.abi = rinkeby.json;
+        self.contractAddress = rinkeby.address;
+        break
+      case "42":
+        self.abi = kovan.json;
+        self.contractAddress = kovan.address;
+        break
+      default:
+        console.log('This is an unknown network.');
+    }
+
+    self.MyContract = self.web3.eth.contract(JSON.parse(self.abi));
+    self.myContractInstance = self.MyContract.at(self.contractAddress);
+
+    self.web3.eth.defaultAccount = self.web3.eth.accounts[0];
+    setInterval(function(){
+      getWalletBalance(self.web3.eth.accounts[0]);
+      document.getElementById('currentAddress').innerHTML = this.web3.eth.accounts[0];
+    }, 3000);
+  });
+}
+
+</script>
